@@ -3,29 +3,29 @@
 #include <Windows.h>
 #include<stdio.h>
 #include<string.h>
-/*¹üÀ§ ÃÊ°úÇÏ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö*/
+/*ë²”ìœ„ ì´ˆê³¼í•˜ëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜*/
 int OOB(int e, int left, int right) {
     if (e < left || e >= right)return 1;
     else return 0;
 }
-/*Â÷ÀÌ°ª °è»êÇÏ´Â ÇÔ¼ö*/
+/*ì°¨ì´ê°’ ê³„ì‚°í•˜ëŠ” í•¨ìˆ˜*/
 float getDiff2(CvScalar a, CvScalar b)
 {
     return (a.val[0] - b.val[0]) * (a.val[0] - b.val[0])
         + (a.val[1] - b.val[1]) * (a.val[1] - b.val[1])
         + (a.val[2] - b.val[2]) * (a.val[2] - b.val[2]);
 }
-/*ÀÌµ¿ÇÏ´Â ÁÂÇ¥°ª ÀúÀåÇÏ±â À§ÇÑ ±¸Á¶Ã¼*/
+/*ì´ë™í•˜ëŠ” ì¢Œí‘œê°’ ì €ì¥í•˜ê¸° ìœ„í•œ êµ¬ì¡°ì²´*/
 typedef struct source {
     int bx;
     int by;
 }sc;
-/*Àı´ë°ª Ã£´Â ÇÔ¼ö*/
+/*ì ˆëŒ€ê°’ ì°¾ëŠ” í•¨ìˆ˜*/
 int abs(int a) {
     int c = a > 0 ? a : -a;
     return c;
 }
-/*diff°ª Ã£´Â ÇÔ¼ö*/
+/*diffê°’ ì°¾ëŠ” í•¨ìˆ˜*/
 sc searchminLoss(int xleft, int xright, int interval, int ystart, int yend, int h, int w, IplImage* img, int flag, int xstart, int xend, int yleft, int yright) {
     sc c;
     float diffr = 0.0f;
@@ -57,7 +57,7 @@ sc searchminLoss(int xleft, int xright, int interval, int ystart, int yend, int 
     }
     return c;
 }
-/*ÀÌ¹ÌÁö ÇÕÄ¡´Â ÇÔ¼ö*/
+/*ì´ë¯¸ì§€ í•©ì¹˜ëŠ” í•¨ìˆ˜*/
 IplImage* combineImage(IplImage* img, sc blue, sc red, int h, int w) {
     IplImage* dst = cvCreateImage(cvSize(w, h), 8, 3);
     cvSet(dst, cvScalar(0, 0, 0));
@@ -74,7 +74,7 @@ IplImage* combineImage(IplImage* img, sc blue, sc red, int h, int w) {
     return dst;
     cvReleaseImage(&dst);
 }
-/*°£°İ ÁÙÀÌ¸é¼­ Å½»öÇÏ´Â ÇÔ¼ö*/
+/*ê°„ê²© ì¤„ì´ë©´ì„œ íƒìƒ‰í•˜ëŠ” í•¨ìˆ˜*/
 sc lossInterval(int xleft, int yleft, int interval, int vary, int xstart, int xend, int ystart, int yend, int h, int w, IplImage* img, int flag) {
     sc result;
     while (interval > 0) {
@@ -102,29 +102,29 @@ int main() {
     printf("Input File Name:");
     char name[200];
     scanf("%s", name);
-        IplImage* img = cvLoadImage(name);  //ÀÌ¹ÌÁö ºÒ·¯¿À±â
+        IplImage* img = cvLoadImage(name);  //ì´ë¯¸ì§€ ë¶ˆëŸ¬ì˜¤ê¸°
         if (img == nullptr) {
             printf("File not Found!");
             exit(-1);
         }
-        CvSize size = cvGetSize(img);   //ÀÌ¹ÌÁö »çÀÌÁî °¡Áö°í ¿À±â
+        CvSize size = cvGetSize(img);   //ì´ë¯¸ì§€ ì‚¬ì´ì¦ˆ ê°€ì§€ê³  ì˜¤ê¸°
 
         int w = size.width;
-        int h = size.height / 3;    //»õ·Î ¸¸µé ÀÌ¹ÌÁö ³ôÀÌ
-        int xt = w / 3; //Å½»ö ¹üÀ§
-        int yt = h / 3; //Å½»ö ¹üÀ§
-        if (h > 500) {  //Å« ÀÌ¹ÌÁö´Â ¿ø·¡ Å½»ö¹üÀ§ÀÇ Àı¹İÀ» Å½»öÇÑ´Ù.
+        int h = size.height / 3;    //ìƒˆë¡œ ë§Œë“¤ ì´ë¯¸ì§€ ë†’ì´
+        int xt = w / 3; //íƒìƒ‰ ë²”ìœ„
+        int yt = h / 3; //íƒìƒ‰ ë²”ìœ„
+        if (h > 500) {  //í° ì´ë¯¸ì§€ëŠ” ì›ë˜ íƒìƒ‰ë²”ìœ„ì˜ ì ˆë°˜ì„ íƒìƒ‰í•œë‹¤.
             xt /= 2;
             yt /= 2;
         }
-        sc k[2];    //ÀÌµ¿ÇÒ ÁÂÇ¥ ÀúÀåÇÒ ±¸Á¶Ã¼ ¹è¿­ »ı¼º
-        /*ÆÄ¶õ»ö ÀÌµ¿ÇÏ±â ½ÃÀÛ*/
+        sc k[2];    //ì´ë™í•  ì¢Œí‘œ ì €ì¥í•  êµ¬ì¡°ì²´ ë°°ì—´ ìƒì„±
+        /*íŒŒë€ìƒ‰ ì´ë™í•˜ê¸° ì‹œì‘*/
         k[0] = lossInterval(0, 0, 16, 40, w / 2 - xt, w / 2 + xt, h / 2 - yt, h / 2 + yt, h, w, img, 0);
-        /*»¡°£»ö ÀÌµ¿ÇÏ±â ½ÃÀÛ*/
+        /*ë¹¨ê°„ìƒ‰ ì´ë™í•˜ê¸° ì‹œì‘*/
         k[1] = lossInterval(0, 0, 16, 40, w / 2 - xt, w / 2 + xt, 2 * h + h / 2 - yt, 2 * h + h / 2 + yt, h, w, img, 1);
-        IplImage* combine = combineImage(img, k[0], k[1], h, w);//ÀÌ¹ÌÁö ÇÕÄ¡±â
-        cvShowImage("img", img);    //¿øº» ÀÌ¹ÌÁö Ãâ·Â
-        cvShowImage("combine", combine);    //ÇÕÄ£ ÀÌ¹ÌÁö Ãâ·Â
+        IplImage* combine = combineImage(img, k[0], k[1], h, w);//ì´ë¯¸ì§€ í•©ì¹˜ê¸°
+        cvShowImage("img", img);    //ì›ë³¸ ì´ë¯¸ì§€ ì¶œë ¥
+        cvShowImage("combine", combine);    //í•©ì¹œ ì´ë¯¸ì§€ ì¶œë ¥
         cvWaitKey();
         cvReleaseImage(&img);
         cvReleaseImage(&combine);
